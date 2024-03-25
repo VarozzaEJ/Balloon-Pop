@@ -1,3 +1,6 @@
+let startButton = document.getElementById('start-button')
+let inflateButton = document.getElementById('inflate-button')
+
 let clickCount = 0
 let height = 120
 let width = 100
@@ -5,6 +8,21 @@ let inflationRate = 20
 let maxsize = 300
 let popCount = 0
 
+
+function startGame(){
+
+  startButton.setAttribute("disabled", "true")
+  inflateButton.removeAttribute("disabled")
+
+  setTimeout(() => {
+    console.log("its been three seconds")
+
+    inflateButton.setAttribute("disabled", "true")
+    startButton.removeAttribute("disabled")
+    
+
+  }, 3000) //=> is equivalent to the term "function"
+}
 
 function inflate(){
   clickCount++
