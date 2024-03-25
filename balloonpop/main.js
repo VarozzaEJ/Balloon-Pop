@@ -1,32 +1,51 @@
+//BUTTONS
 let startButton = document.getElementById('start-button')
 let inflateButton = document.getElementById('inflate-button')
 
+// #region GAME LOGIC AND DATA
+
+
+// DATA
 let clickCount = 0
 let height = 120
 let width = 100
 let inflationRate = 20
 let maxsize = 300
-let popCount = 0
+let highestPopCount = 0
+let currentPopCount = 0
+let gameLength = 5000
+let clockId = 0
+let timeRemaining = 0
 
 
 function startGame(){
 
   startButton.setAttribute("disabled", "true")
   inflateButton.removeAttribute("disabled")
-
-  setTimeout(() => {
-    console.log("its been three seconds")
-
-    inflateButton.setAttribute("disabled", "true")
-    startButton.removeAttribute("disabled")
-    
-
-  }, 3000) //=> is equivalent to the term "function"
+  startClock()
+  setTimeout(stopGame, gameLength) //=> is equivalent to the term "function"
 }
+
+function startClock(){
+  timeRemaining = gameLength
+  drawClock()
+  clockId = setInterval(drawClock, 1000)
+}
+
+function stopClock(){
+  clearInterval(clockId)
+}
+
+function drawClock(){
+let countdownElem = document.getElementById('countdown')
+countdownElem.innerText = (timeRemaining / 1000).toString()
+timeRemaining -= 1000
+}
+
 
 function inflate(){
   clickCount++
-  let balloonElement = document.getElementById("balloon")
+  
   height += inflationRate
   width += inflationRate
 
@@ -34,15 +53,55 @@ function inflate(){
 
   if(height >= maxsize){
     console.log("pop the balloon")
-    popCount++
+    currentPopCount++
     height = 0
     width = 0
-    document.getElementById('pop-count').innerText = popCount.toString()
   }
+  draw()
+}
+
+function draw(){
+  let clickCountElem = document.getElementById("click-count")
+  let balloonElement = document.getElementById("balloon")
+  let popCountElem = document.getElementById('pop-count')
+  let highPopCountElem = document.getElementById('high-pop-count')
+  
 
   balloonElement.style.height = height + "px"
   balloonElement.style.width = width + "px"
 
-  let clickCountElem = document.getElementById("click-count")
   clickCountElem.innerText = clickCount.toString()
+  popCountElem.innerText = currentPopCount.toString()
+  highPopCountElem.innerText = highestPopCount.toString()
+}
+
+function stopGame(){
+  console.log("the game is over")
+
+  inflateButton.setAttribute("disabled", "true")
+  startButton.removeAttribute("disabled")
+  
+  clickCount = 0
+  height = 120
+  width = 100
+
+  if(currentPopCount > highestPopCount){
+    highestPopCount = currentPopCount
+  }
+  currentPopCount = 0
+
+  stopClock()
+  draw()
+}
+// #endregion
+
+let players = []
+
+function setPlayer(event){
+  event.preventDefault()
+  let form = event.target
+
+  let playerName = form.playerName.value
+  form.reset()
+
 }
