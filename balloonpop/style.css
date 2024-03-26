@@ -1,11 +1,14 @@
 body{
-  background-color: pink;
+  background-color: purple;
 }
 
 .balloon{
   height: 120px;
   width: 100px;
-  background-color: blue
+  background-color: yellow
   ;
   border-radius: 50%;
+}
+.hidden{
+  display: none;
 }
